@@ -1,7 +1,7 @@
 
 @font-face {
   font-family: 'Gilroy';
-  src: url('/font/Gilroy-Medium.woff2') format('woff2');
+  src: url('../public/font/fonnts.com-Gilroy-Medium.ttf') ;
   font-weight: 500;
   font-style: normal;
   font-display: swap;
