@@ -36,7 +36,7 @@ const App = () => {
             playsInline
             preload="auto"
           >
-            <source src="/zerologicComingsoon.mp4" type="video/mp4" />
+            <source src="/zerologicvideo.mp4" type="video/mp4" />
           </video>
         </div>
       </section>
