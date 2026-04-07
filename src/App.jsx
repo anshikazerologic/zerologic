@@ -5,9 +5,22 @@ const App = () => {
 
   useEffect(() => {
     const v = videoRef.current;
+
     if (v) {
+      v.defaultMuted = true;
       v.muted = true;
-      v.play().catch(() => {});
+      v.setAttribute("playsinline", "");
+      v.setAttribute("webkit-playsinline", "");
+
+      const playVideo = async () => {
+        try {
+          await v.play();
+        } catch (err) {
+          console.log("Autoplay prevented:", err);
+        }
+      };
+
+      playVideo();
     }
   }, []);
 
@@ -15,7 +28,14 @@ const App = () => {
     <main className="container">
       <section className="video-section">
         <div className="video-wrapper">
-          <video ref={videoRef} autoPlay loop muted playsInline>
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+          >
             <source src="/zerologicComingsoon.mp4" type="video/mp4" />
           </video>
         </div>
