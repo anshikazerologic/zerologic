@@ -4,24 +4,34 @@ const App = () => {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    const v = videoRef.current;
+    const video = videoRef.current;
+    if (!video) return;
 
-    if (v) {
-      v.defaultMuted = true;
-      v.muted = true;
-      v.setAttribute("playsinline", "");
-      v.setAttribute("webkit-playsinline", "");
+    
+    video.muted = true;
+    video.defaultMuted = true;
 
-      const playVideo = async () => {
-        try {
-          await v.play();
-        } catch (err) {
-          console.log("Autoplay prevented:", err);
-        }
-      };
+    
+    const tryPlay = () => {
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          const resume = () => {
+            video.play();
+            document.removeEventListener("touchstart", resume);
+            document.removeEventListener("click", resume);
+          };
+          document.addEventListener("touchstart", resume, { once: true });
+          document.addEventListener("click", resume, { once: true });
+        });
+      }
+    };
 
-      playVideo();
-    }
+    video.addEventListener("canplay", tryPlay);
+
+    return () => {
+      video.removeEventListener("canplay", tryPlay);
+    };
   }, []);
 
   return (
@@ -35,8 +45,9 @@ const App = () => {
             muted
             playsInline
             preload="auto"
+            controls={false}
           >
-            <source src="/zerologicanimation.mp4" type="video/mp4" />
+            <source src="/final-video.mp4" type="video/mp4" />
           </video>
         </div>
       </section>
